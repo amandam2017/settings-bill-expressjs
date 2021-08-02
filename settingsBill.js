@@ -1,7 +1,6 @@
 module.exports = function SettingsBill() {
     //added a moment module
-    var moment = require('moment'); // require
-    moment().format();
+    let moment = require('moment'); // require
 
     let smsCost;
     let callCost;
