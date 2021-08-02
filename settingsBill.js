@@ -1,138 +1,109 @@
 module.exports = function SettingsBill() {
 
-    let smsCost;
-    let callCost;
-    let warningLevel;
-    let criticalLevel; 
-
-    let actionList = [];
-
-    function setSettings (settings) {
-        smsCost = Number(settings.smsCost);
-        callCost = Number(settings.callCost);
-        warningLevel = settings.warningLevel;
-        criticalLevel = settings.criticalLevel;
-    }
-
-    function getSettings
-    () {
-        return {
-            smsCost,
-            callCost,
-            warningLevel,
-            criticalLevel
+    // function BillWithSettings(){
+        //create variable for settingsBill
+        var theCallCost = 0;
+        var theSmsCost = 0;
+        var theWarningLevel = 0;
+        var theCriticalLevel = 0;
+    
+        var callCostTotal = 0;
+        var smsCostTotal = 0;
+        //var theCriticalTotal = 0 
+    
+        function setCallCost(callCost){
+             theCallCost = callCost;
         }
-    }
-
-    function recordAction(action) {
-
-        let cost = 0;
-        if (action === 'sms' && !hasReachedCriticalLevel()){
-            cost = smsCost;
+    
+        function getCallCost(callCost){
+            return theCallCost;
+       }
+    
+       function setSmsCost(smsCost){
+            theSmsCost = smsCost;
         }
-        else if (action === 'call' && !hasReachedCriticalLevel()){
-            cost = callCost;
+    
+        function getSmsCost(smsCost){
+            return theSmsCost;
         }
-
-        actionList.push({
-            type: action,
-            cost,
-            timestamp: new Date()
-        });
-    }
-
-    function actions(){
-        return actionList;
-    }
-
-    function actionsFor(type){
-        const filteredActions = [];
-
-        // loop through all the entries in the action list 
-        for (let index = 0; index < actionList.length; index++) {
-            const action = actionList[index];
-            // check this is the type we are doing the total for 
-            if (action.type === type) {
-                // add the action to the list
-                filteredActions.push(action);
+    //set warningLevel function
+        function setWarningLevel(warningLevel){
+            theWarningLevel = warningLevel;
+        }
+    
+        function getWarningLevel(warningLevel){
+            return theWarningLevel;
+        }
+    
+    
+        //set warningLevel function
+        function setCriticalLevel(criticalLevel){
+            theCriticalLevel = criticalLevel;
+        }
+    
+        function getCriticalLevel(criticalLevel){
+            return theCriticalLevel;
+        }
+    
+        function makeCall(){
+            //when sending sms if I have not reached the criticalLevel...increament the call cost 
+            if(!hasReachedCriticalLevel()){
+                callCostTotal += theCallCost;
             }
         }
-
-        return filteredActions;
-
-        // return actionList.filter((action) => action.type === type);
-    }
-
-    function getTotal(type) {
-        let total = 0;
-        // loop through all the entries in the action list 
-        for (let index = 0; index < actionList.length; index++) {
-            const action = actionList[index];
-            // check this is the type we are doing the total for 
-            if (action.type === type) {
-                // if it is add the total to the list
-                total += action.cost;
-            }
+        function getTotalCost(){
+            return callCostTotal + smsCostTotal;
         }
-        return total;
-
-        // the short way using reduce and arrow functions
-
-        // return actionList.reduce((total, action) => { 
-        //     let val = action.type === type ? action.cost : 0;
-        //     return total + val;
-        // }, 0);
-    }
-
-    function grandTotal() {
-        return getTotal('sms') + getTotal('call');
-    }
-
-    function totals() {
-        let smsTotal = getTotal('sms')
-        let callTotal = getTotal('call')
+    
+        function getTotalCallCost(){
+            return callCostTotal;
+        }
+    
+        function getTotalSmsCost(){
+            return smsCostTotal;
+        }
+    
+        function sendSms(){
+            //when sending sms if I have not reached the criticalLevel...increament the sms cost 
+            if(!hasReachedCriticalLevel()){
+                smsCostTotal += theSmsCost;
+                
+            };
+        }
+        //this function below checks if the total cost is great or equal the criticalLevel
+        function hasReachedCriticalLevel(){
+            return getTotalCost() >= getCriticalLevel()
+        }
+    
+        function totalClassName(){
+    
+            if(hasReachedCriticalLevel()){
+                return "critical";
+            };
+    
+            if(getTotalCost() >= getWarningLevel()){
+                return "warning";
+            };
+        
+        }
+    
+    //expose functions into factory function
         return {
-            smsTotal,
-            callTotal,
-            grandTotal : grandTotal()
+            setCallCost,
+            getCallCost,
+            setSmsCost,
+            getSmsCost,
+            setWarningLevel,
+            getWarningLevel,
+            setCriticalLevel,
+            getCriticalLevel,
+            makeCall,
+            getTotalCost,
+            getTotalCallCost,
+            getTotalSmsCost,
+            sendSms,
+            totalClassName
+    
         }
-    }
-
-    function hasReachedWarningLevel(){
-        const total = grandTotal();
-        const reachedWarningLevel = total >= warningLevel 
-            && total < criticalLevel;
-
-        return reachedWarningLevel;
-    }
-
-    function hasReachedCriticalLevel(){
-        const total = grandTotal();
-        return total >= criticalLevel;
-    }
-
-     // added function for className
-     function addClass(){
-        let className = "";
-
-        if(hasReachedWarningLevel()){
-            return className = "warning"
-        }
-
-        if(hasReachedCriticalLevel()){
-            return className = "danger"
-        }
-    }
-
-    return {
-        setSettings,
-        getSettings,
-        recordAction,
-        actions,
-        actionsFor,
-        totals,
-        hasReachedWarningLevel,
-        hasReachedCriticalLevel,
-        addClass
-    }
+    // }
 }
