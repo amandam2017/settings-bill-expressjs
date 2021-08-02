@@ -1,4 +1,7 @@
 module.exports = function SettingsBill() {
+    //added a moment module
+    var moment = require('moment'); // require
+    moment().format();
 
     let smsCost;
     let callCost;
@@ -25,7 +28,6 @@ module.exports = function SettingsBill() {
     }
 
     function recordAction(action) {
-
         let cost = 0;
         if (action === 'sms' && !hasReachedCriticalLevel()){
             cost = smsCost;
@@ -34,11 +36,14 @@ module.exports = function SettingsBill() {
             cost = callCost;
         }
 
+        if(action === 'sms' && cost >= 0 || action === 'call' && cost >= 0){
         actionList.push({
             type: action,
             cost,
-            timestamp: new Date()
+            // timestamp: today.format()
+            timestamp: moment(new Date()).fromNow()
         });
+    }
     }
 
     function actions(){
