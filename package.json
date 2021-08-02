@@ -1,7 +1,7 @@
 {
   "name": "settings-bill-expressjs",
   "version": "1.0.0",
-  "description": "[![Build Status](https://www.travis-ci.com/amandam2017/settings-bill-expressjs.svg?branch=master)](https://www.travis-ci.com/amandam2017/settings-bill-expressjs)",
+  "description": "",
   "main": "settingsBill.js",
   "directories": {
     "test": "test"
