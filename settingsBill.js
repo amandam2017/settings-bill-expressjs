@@ -116,11 +116,11 @@ module.exports = function SettingsBill() {
         let className = "";
 
         if(hasReachedWarningLevel()){
-            return className = "warning"
+            return className = "warning";
         }
 
         if(hasReachedCriticalLevel()){
-            return className = "danger"
+            return className = "danger";
         }
     }
 
