@@ -8,6 +8,7 @@ describe('settings-bill', function(){
 
     it('should be able to record calls', function(){
         settingsBill.recordAction('call');
+        
         assert.equal(0, settingsBill.actionsFor('call').length);
     });
 
