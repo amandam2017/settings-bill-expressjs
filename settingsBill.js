@@ -111,7 +111,7 @@ module.exports = function SettingsBill() {
         return total >= criticalLevel;
     }
 
-     // added function for className
+     //***** added function for className *****//
      function addClass(){
         let className = "";
 
